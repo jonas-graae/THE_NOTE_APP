@@ -1,5 +1,30 @@
-// import './utilities.js'
-import square, {add, name} from './utilities';
+import { createNote } from './notes';
+import { setFilters } from './filters';
+import { renderNotes } from './views';
 
-console.log(add(4, 4));
-console.log(square(10));
+renderNotes();
+
+document.querySelector('#create-note').addEventListener('click', (e) => {
+    const id = createNote();
+    location.assign(`/edit.html#${id}`);
+});
+
+document.getElementById('search-text').addEventListener('input', (e) => {
+    setFilters({
+        searchText: e.target.value
+    });
+    renderNotes();
+});
+
+document.getElementById('filter-by').addEventListener('change', (e) => {
+    setFilters({
+        sortBy: e.target.value
+    })
+    renderNotes();
+});
+
+window.addEventListener('storage', (e) => {
+    if(e.key === 'notes') {
+        renderNotes();
+    }
+});
